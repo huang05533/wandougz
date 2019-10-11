@@ -24,17 +24,17 @@
 				<div class="br-w">中古奢品</div>
 				<div class="br-sel">ビンテージ</div>
 	        </div>
-	        <div @click="toggle(br2);" :class="{gu:msg==br2}">
+	        <div @click="toggle(br5);" :class="{gu:msg==br5}">
 	            <div class="floor"><span>4</span>階</div>
 				<div class="br-w">护肤美妆</div>
 				<div class="br-sel">美容コスメ</div>
 	        </div>
-	        <div @click="toggle(br3);" :class="{gu:msg==br3}">
+	        <div @click="toggle(br6);" :class="{gu:msg==br6}">
 	        	<div class="floor"><span>5</span>階</div>
 				<div class="br-w">个人洗护</div>
 				<div class="br-sel">パーソナルケア</div>
 	        </div>
-	            　<div @click="toggle(br4);" :class="{gu:msg==br4}">
+	            　<div @click="toggle(br7);" :class="{gu:msg==br7}">
 	            <div class="floor"><span>6</span>階</div>
 				<div class="br-w">中古奢品</div>
 				<div class="br-sel">ビンテージ</div>
@@ -56,6 +56,9 @@
 	import br2 from '../component/br2';
 	import br3 from '../component/br3';
 	import br4 from '../component/br4';
+	import br5 from '../component/br5';
+	import br6 from '../component/br6';
+	import br7 from '../component/br7';
 	export default{
 		data () {
 		    return {
@@ -66,6 +69,9 @@
 	  			br2:"br2",
 	  			br3:"br3",
 	  			br4:"br4",
+	  			br5:"br5",
+	  			br6:"br6",
+	  			br7:"br7",
 	  			msg: 'br1'
 	  			
 		     } 
@@ -74,7 +80,10 @@
 	       	br1,
 		     br2,
 		     br3,
-		     br4
+		     br4,
+		     br5,
+		     br6,
+		     br7
 	    },
 		methods:{
 			 toggle(n) {

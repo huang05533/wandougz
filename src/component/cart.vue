@@ -12,7 +12,9 @@
 			<div class="cart-main">
 				
 				<div class="cart-box1">
-					<input type="radio" class="chek" v-model="picked" value="0" id="va0"></input>
+					<input type="radio" class="chek"></input>
+					<!--<img v-if="v.selected" class="chek" @click="radios(i)" src="../../data/images/shopbag/red-icon.png" />
+					<img v-else="!v.selected" class="chek" @click="radios(i)" src="../../data/images/shopbag/select-icon.png" />-->
 					<div class="hou-name">郑州保税仓</div>
 					<div class="flex-padding"></div>
 					<div class="my-coupon">优惠券</div>
@@ -38,7 +40,9 @@
 						<div class="cart-items">
 							<div class="cart-items1">
 								<div class="sec-icon">
-									<input type="radio" class="chek" v-model="picked" value="166" id="va3"></input>
+									<!--<input type="radio" class="chek" v-model="picked" value="166" id="va3"></input>-->
+									<img v-if="v.selected" class="chek" @click="radios(i)" src="../../data/images/shopbag/red-icon.png" />
+									<img v-else="!v.selected" class="chek" @click="radios(i)" src="../../data/images/shopbag/select-icon.png" />
 								</div>
 							</div>
 							<div class="cart-items-main">
@@ -50,15 +54,15 @@
 										{{v.name}}
 									</div>
 									<div class="hououse">
-										<div class="hououse-name">{{v.des}}</div>
+										<div class="hououse-name" >{{v.des}}</div>
 									</div>
 									<div class="hououse reduce"><span>直降{{v.price1}}元</span></div>
 									<div class="fr-price">
-										<div class="fr-price1">￥{{v.price2}}</div>
+										<div class="fr-price1">￥{{v.money}}</div>
 										<div class="addcount">
-											<span class="addc1" @click="su()"><span></span></span>
-											<span class="addc2">{{$store.state.count}}</span>
-											<span class="addc3" @click="hr()">
+											<span class="addc1" @click="btn_minute(i)"><span></span></span>
+											<span class="addc2" v-model="v.num">{{v.num}}</span>
+											<span class="addc3" @click="btn_add(i)">
 												<span class="ac1"></span>
 												<span class="ac2"></span>
 											</span>
@@ -68,7 +72,7 @@
 										<div class="redu-re-box">
 											<div class="curname">直降</div>
 											<div class="curdesc">享受特价优惠,且不与其他活动同享</div>
-											<div class="cur-btn">更换</div>
+											<div class="cur-btn" @click="delerte(i)">删除</div>
 										</div>
 									</div>
 								</div>
@@ -89,12 +93,12 @@
 				<div class="counter-info">
 					<div class="cou-title">
 						合计：
-						<span>¥{{picked}}</span>
-						<span class="sub-title">已优惠¥0.00</span>
+						<span>¥{{money}}</span>
+						<span class="sub-title">已选商品个数为&nbsp;<span>{{num}}</span></span>
 					</div>
 					<div class="sub-title">不含运费和综合税</div>
 				</div>
-				<button class="counter-btn">结算郑州保税仓(5)</button>
+				<button class="counter-btn">结算郑州保税仓({{num}})</button>
 			</div>
 		</div>
 	
@@ -109,9 +113,57 @@
 		data(){
 			return{
 				con2:'',
-				picked:'va1'
+				//默认总价
+				money: 0,
+				//默认总数量
+				num: 0,
+				con2: [
+				{
+					images:"./data/images/index/lit1.png",
+					name:"SHISEIDO 资生堂 ANESSA 安耐晒2018新版金瓶清透防水防晒护肤乳 SPF50+・PA++++ 60ml",
+					des:"郑州保税仓",
+					price1:40,
+					money:100,
+					num: 1,
+					selected: false	
+				},
+				{
+					images:"./data/images/index/lit2.png",
+					name:"SHISEIDO 资生堂 ANESSA 安耐晒2018新版金瓶清透防水防晒护肤乳 SPF50+・PA++++ 60ml",
+					des:"郑州保税仓",
+					price1:60,
+					money:200,
+					num: 1,
+					selected: false	
+				},
+				{
+					images:"./data/images/index/lit3.png",
+					name:"SHISEIDO 资生堂 ANESSA 安耐晒2018新版金瓶清透防水防晒护肤乳 SPF50+・PA++++ 60ml",
+					des:"郑州保税仓",
+					price1:60,
+					money:300,
+					num: 1,
+					selected: false	
+				}
+				
+			]
 			}
-		   
+		},
+		//初始化加载   显示总价总数量
+		created() {
+			var price = 0;
+			var numb = 0;
+			var list = this.con2;
+			
+			for(var i = 0; i < list.length; i++) {
+				//当前选中
+				if(list[i].selected) {
+					price += list[i].num * list[i].money;
+					numb += list[i].num;
+				}
+			}
+			this.money = price;
+			this.num = numb;
 		},
 		methods:{
 //			pre(){
@@ -120,24 +172,61 @@
 			back5(){
 				this.$router.replace('/home')
 			},
-			hr(){
-				this.$store.commit('add',1)
+			
+			//总价总数量方法   方便调用   再次多写了一次[可以跟初始化封装为一个方法]
+			hh() {
+				var price = 0;
+				var numb = 0;
+				var list = this.con2;
+				for(var i = 0; i < list.length; i++) {
+					if(list[i].selected) {
+						price += list[i].num * list[i].money;
+						numb += list[i].num;
+					}
+				}
+				this.money = price;
+				this.num = numb;
 			},
-			su(){
-				this.$store.commit('sub',1)
-			}
+			//删除购物车列表
+			delerte(i) {
+				this.con2.splice(i, 1);
+			},
+			//选中未选中
+			radios(i) {
+				var list = this.con2;
+				list[i].selected = !list[i].selected;
+				this.hh();  //执行计算总价总数量方法
+			},
+			//添加
+			btn_add(i) {
+				var list = this.con2;
+				var st = list[i].num;
+				st = st + 1;
+				list[i].num = st;
+				this.hh();
+			},
+			//减去
+			btn_minute(i) {
+				var list = this.con2;
+				var su = list[i].num;
+				if(su > 1) {
+					su = su - 1;
+					list[i].num = su;
+				}
+				this.hh();
+			},
 
 	},
 	mounted(){
-     	this.$http.get('./data/my.json')
-		.then((response)=>{
-		this.con2=response.data.con2;
-		})
-		.catch(function (error) {	
-			console.log(error);
-		})
-		.then(function () {		
-		})
+//   	this.$http.get('./data/my.json')
+//		.then((response)=>{
+//		this.con2=response.data.con2;
+//		})
+//		.catch(function (error) {	
+//			console.log(error);
+//		})
+//		.then(function () {		
+//		})
 		
 		
      }
